@@ -1,35 +1,85 @@
+<?php
+session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+$host = "localhost";
+$user = "pdelrossi1";
+$pass = "pdelrossi1";
+$dbname = "pdelrossi1";
+
+$conn = new mysqli($host, $user, $pass, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["login"])) {
+        // Login logic
+        $input_user = $_POST["username"];
+        $input_pass = $_POST["password"];
+
+        // Validate login credentials against the database
+        $sql_login = "SELECT * FROM users_new WHERE username='$input_user'";
+        $result = $conn->query($sql_login);
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $stored_pass = $row["password"];
+
+            // Verify the hashed password
+            if (password_verify($input_pass, $stored_pass)) {
+                $_SESSION["loggedin"] = true;
+                header("Location: index.html");
+                exit;
+            } else {
+                echo "Invalid username or password.";
+            }
+        } else {
+            echo "Invalid username or password.";
+        }
+    }
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 4</title>
+    <title>Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    
     <div class="login-container">
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <h1>Login Here</h1>
-            <div class="input-group">
-                <label for="username">Email:</label>
-                <input type="text" id="username" name="username" required placeholder="Email">
+    <h1>Login</h1>
+    <form action="" method="post">
+        <div class="input-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" placeholder="Email" required><br>
+        </div>
+        <div class="input-group">
+            <label for="username">Password:</label>
+            <input type="password" name="password" placeholder="Password" required><br>
+        </div>
+        <input type="submit" name="login" value="Login"><br><br>
+        <div class="input-group">
+            <div class="register">
+                <img src="register.png" alt="register">
+        </div>
+            <a href="registration.php">Register</a>
+        </div>
+        <div class="input-group">
+            <div class="lock">
+                <img src="lock.png" alt="lock">
             </div>
-            <div class="input-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required placeholder="Password">
-            </div><br>
-            <button type="submit" name="signup">Log in</button>
-            <div class="login-link">
-                <img src="" alt="">
-                <a href="signup.php">Register</a>
-            </div>
-            <div class="login-link">
-                <img src="lock.png" alt="lock" id="lock">
-                <a href="index.php">Forgot Password?</a>
-            </div>
-        </form>
-    </div>
+
+            <a href="#">Forgot Password?</a>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
