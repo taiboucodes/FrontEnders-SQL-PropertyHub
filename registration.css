@@ -1,0 +1,68 @@
+body {
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+h2, h1 {
+    text-align: center;
+}
+.login-container { 
+    background: rgba(137, 207, 240, 0.7);
+    padding: 3%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+.input-group {
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+}
+.input-group label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-left: 40px;
+}
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 75%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 25px;
+}
+input[type="submit"] {
+    padding: 12px 20px; /* Adjust padding to change button size */
+    width: 80%;
+    margin-left: 40px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Change font size */
+}
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+input[type="submit"], button {
+    width: 80%;
+}
+input[type="checkbox"] {
+    margin-right: 410px; /* Adjust margin as needed for spacing */
+}
+.login-link {
+    text-align: center;
+    margin-bottom: 10px;
+}

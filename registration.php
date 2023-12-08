@@ -55,7 +55,7 @@ $conn->close();
 <html>
 <head>
     <title>Registration</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="registration.css">
     <script>
         function toggleSecretPassword() {
             var userType = document.getElementById("user_type").value;
