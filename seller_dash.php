@@ -65,7 +65,8 @@ $conn->close();
 <h2>Seller Dashboard</h2>
 
 <div id="formContainer" style="display: none;">
-    <form method="post">
+    <form method="post" action="seller_dash.php">
+
         <!-- Fields -->
         <?php
         $fields = [
