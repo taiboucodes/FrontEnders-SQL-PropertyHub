@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Check if the user is not logged in, if not then redirect to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("Location: login.php");
+    exit;
+}
 $host = "localhost";
 $user = "pdelrossi1";
 $pass = "pdelrossi1";
@@ -6,6 +13,7 @@ $dbname = "pdelrossi1";
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+$username = isset($_SESSION["username"]) ? $_SESSION["username"] : "User";
 
 
 $conn = new mysqli($host, $user, $pass, $dbname);
@@ -54,15 +62,21 @@ $conn->close();
     <link rel="stylesheet" href="dash.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="login.php">Login</a>
-        <a href="registration.php">Register</a>
-        <a href="seller_dash.php">Seller Dashboard</a>
-        <a href="search.php">Search Database</a>
-    </nav> 
+	<nav class="nav-bar">
+		<div>
+			<a href="index.html">Home</a>
+			<a href="login.php">Login</a>
+			<a href="registration.php">Register</a>
+			<a href="seller_dash.php">Seller Dashboard</a>
+			<a href="search.php">Search Database</a>
+		</div>
+		<div>
+			<span class="nav-welcome">Welcome, <?php echo htmlspecialchars($username); ?> !</span>
+			<a href="logout.php" class="logout-button">Logout</a>
+		</div>
+	</nav>
 
-<h2>Seller Dashboard</h2>
+
 
 <div id="formContainer" style="display: none;">
     <form method="post" action="seller_dash.php">
