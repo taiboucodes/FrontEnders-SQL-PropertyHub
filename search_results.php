@@ -11,12 +11,13 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $search_query = $_POST["search_query"];
-    $table_query = $_POST["table_query"];
-    $property_query = $_POST["property_query"];
+    $search_query = trim($_POST["search_query"]);
+    $table_query = trim($_POST["table_query"]);
+    $property_query = trim($_POST["property_query"]);
 
     // Perform search in the users_new table for a specific username
     if (!empty($search_query) && empty($table_query) && empty($property_query)) {
+        $search_query = $conn->real_escape_string($search_query); // Use real_escape_string to prevent SQL injection
         $sql_user_search = "SELECT * FROM users_new WHERE username = '$search_query'";
         $result_user_search = $conn->query($sql_user_search);
 
