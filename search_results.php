@@ -13,9 +13,10 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $search_query = $_POST["search_query"];
     $table_query = $_POST["table_query"];
+    $property_query = $_POST["property_query"];
 
     // Perform search in the users_new table for a specific username
-    if (!empty($search_query) && empty($table_query)) {
+    if (!empty($search_query) && empty($table_query) && empty($property_query)) {
         $sql_user_search = "SELECT * FROM users_new WHERE username = '$search_query'";
         $result_user_search = $conn->query($sql_user_search);
 
@@ -32,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Perform search for the entire specified table
-    if (!empty($table_query)) {
+    if (!empty($table_query) && empty($search_query) && empty($property_query)) {
         $table_query = strtolower($table_query);
 
         // Display the entire specified table
@@ -59,6 +60,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Invalid table specified.";
         }
+    }
+
+    // Perform search for all property listings
+    if (!empty($property_query) && strtolower($property_query) === "properties" && empty($search_query) && empty($table_query)) {
+        $sql_property_table = "SELECT * FROM properties";
+        $result_property_table = $conn->query($sql_property_table);
+
+        // Display all rows and columns from the properties table
+        echo "<h3>All Property Listings</h3>";
+
+        echo "<table border='1'>";
+        echo "<tr><th>Location</th><th>Age</th><th>Square Feet</th><th>Beds</th><th>Baths</th><th>Garden</th><th>Parking</th><th>School Proximity</th><th>Main Road Proximity</th><th>Property Tax</th><th>Creator Username</th></tr>";
+
+        while ($row = $result_property_table->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row["location"] . "</td>";
+            echo "<td>" . $row["age"] . "</td>";
+            echo "<td>" . $row["sqr_feet"] . "</td>";
+            echo "<td>" . $row["num_beds"] . "</td>";
+            echo "<td>" . $row["num_bath"] . "</td>";
+            echo "<td>" . $row["y_nGarden"] . "</td>";
+            echo "<td>" . $row["parking"] . "</td>";
+            echo "<td>" . $row["school_prox"] . "</td>";
+            echo "<td>" . $row["mainRoad_prox"] . "</td>";
+            echo "<td>" . $row["prop_tax"] . "</td>";
+            echo "<td>" . $row["creator_username"] . "</td>";
+            echo "</tr>";
+        }
+
+        echo "</table>";
     }
 
     echo "<p><a href='index.html'>Return to homepage</a></p>";
