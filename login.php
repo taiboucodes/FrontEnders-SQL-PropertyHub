@@ -52,7 +52,13 @@ $conn->close();
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+<nav>
+            <a href="index.html">Home</a>
+            <a href="login.php">Login</a>
+            <a href="registration.php">Register</a>
+            <a href="seller_dash.php">Seller Dashboard</a>
+            <a href="search.php">Search Database</a>
+</nav> 
     <div class="login-container">
     <h1>Login</h1>
     <form action="" method="post">
