@@ -4,9 +4,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 $host = "localhost";
-$user = "pdelrossi1";
-$pass = "pdelrossi1";
-$dbname = "pdelrossi1";
+$user = "pdelrossi1"; // Your database username
+$pass = "pdelrossi1"; // Your database password
+$dbname = "pdelrossi1"; // Your database name
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
@@ -14,36 +14,39 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["login"])) {
-        // Login logic
-        $input_user = $_POST["username"];
-        $input_pass = $_POST["password"];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
+    // Login logic
+    $input_user = $_POST["username"];
+    $input_pass = $_POST["password"];
 
-        // Validate login credentials against the database
-        $sql_login = "SELECT * FROM users_new WHERE username='$input_user'";
-        $result = $conn->query($sql_login);
+    // Prepared statement to avoid SQL Injection
+    $stmt = $conn->prepare("SELECT id, username, password FROM users_new WHERE username = ?");
+    $stmt->bind_param("s", $input_user);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result->num_rows == 1) {
-            $row = $result->fetch_assoc();
-            $stored_pass = $row["password"];
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $stored_pass = $row["password"];
 
-            // Verify the hashed password
-            if (password_verify($input_pass, $stored_pass)) {
-                $_SESSION["loggedin"] = true;
-                header("Location: index.html");
-                exit;
-            } else {
-                echo '<div class="login-container">';
-                echo "Invalid username or password.";
-                echo '</div>';
-            }
+        // Verify the hashed password
+        if (password_verify($input_pass, $stored_pass)) {
+            // Set session variables
+            $_SESSION["loggedin"] = true;
+            $_SESSION["userid"] = $row["id"];
+            $_SESSION["username"] = $row["username"];
+
+            // Redirect to the main page
+            header("Location: index.html");
+            exit;
         } else {
-            echo '<div class="login-container">';
-            echo "Invalid username or password.";
-            echo '</div>';
+            $login_error = "Invalid username or password.";
         }
+    } else {
+        $login_error = "Invalid username or password.";
     }
+
+    $stmt->close();
 }
 
 $conn->close();
@@ -57,38 +60,25 @@ $conn->close();
 </head>
 <body>
     <nav>
-        <a href="index.html">Home</a>
         <a href="login.php">Login</a>
         <a href="registration.php">Register</a>
-        <a href="seller_dash.php">Seller Dashboard</a>
-        <a href="search.php">Search Database</a>
-    </nav> 
+    </nav>
     <div class="login-container">
-    <h1>Login</h1>
-    <form action="" method="post">
-        <div class="input-group">
-            <label for="username">Username:</label>
-            <input type="text" name="username" placeholder="Email" required><br>
-        </div>
-        <div class="input-group">
-            <label for="username">Password:</label>
-            <input type="password" name="password" placeholder="Password" required><br>
-        </div>
-        <input type="submit" name="login" value="Login"><br><br>
-        <div class="input-group">
-            <div class="register">
-                <img src="register.png" alt="register">
-        </div>
-            <a href="registration.php">Register</a>
-        </div>
-        <div class="input-group">
-            <div class="lock">
-                <img src="lock.png" alt="lock">
+        <h1>Login</h1>
+        <form action="" method="post">
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input type="text" name="username" placeholder="Email" required><br>
             </div>
-            <a href="#">Forgot Password?</a>
-        </div>
-    </form>
-</div>
-
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" required><br>
+            </div>
+            <input type="submit" name="login" value="Login">
+            <?php if(isset($login_error)): ?>
+                <p><?php echo $login_error; ?></p>
+            <?php endif; ?>
+        </form>
+    </div>
 </body>
 </html>
