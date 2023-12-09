@@ -2,12 +2,13 @@ const addPropertyBtn = document.getElementById('addPropertyBtn');
 const formContainer = document.getElementById('formContainer');
 const propertyList = document.getElementById('propertyList');
 
-addPropertyBtn.addEventListener('click', function() {
+addPropertyBtn.addEventListener('click', function () {
     formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
     addPropertyBtn.style.display = 'none';
 });
 
 function displayProperty() {
+    // Get form data
     const location = document.getElementsByName('location')[0].value;
     const age = document.getElementsByName('age')[0].value;
     const sqrFeet = document.getElementsByName('sqr_feet')[0].value;
@@ -35,21 +36,49 @@ function displayProperty() {
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.classList.add('delete-btn');
-    deleteButton.addEventListener('click', function() {
+    deleteButton.addEventListener('click', function () {
         propertyCard.remove();
     });
-    
+
     propertyCard.appendChild(deleteButton);
     propertyList.appendChild(propertyCard);
 }
 
 const form = document.querySelector('form');
-form.addEventListener('submit', function(event) {
+form.addEventListener('submit', function (event) {
     event.preventDefault();
     displayProperty();
-    formContainer.style.display = 'none';
-    addPropertyBtn.style.display = 'block';
-    form.reset();
+
+    // Get form data
+    const formData = new FormData(form);
+	formData.append('submit_property', 'true'); // Append the 'submit_property' parameter
+
+
+    // Create an XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+
+    // Set up the POST request
+    xhr.open('POST', 'seller_dash.php', true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    // Define a callback function to handle the response
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Successfully posted data to the server
+                formContainer.style.display = 'none';
+                addPropertyBtn.style.display = 'block';
+                form.reset();
+                // You can optionally display a success message here
+            } else {
+                // Handle any errors here
+                console.error('Error:', xhr.status, xhr.statusText);
+            }
+        }
+    };
+
+    // Send the form data to the server
+    xhr.send(formData);
 });
 
 function goBack() {
