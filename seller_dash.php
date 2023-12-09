@@ -64,7 +64,7 @@ $conn->close();
 
 <h2>Seller Dashboard</h2>
 
-<div id="formContainer">
+<div id="formContainer" style="display: none;">
     <form method="post">
         <!-- Fields -->
         <?php
@@ -85,11 +85,15 @@ $conn->close();
             echo '<input type="text" name="' . $name . '">';
         }
         ?>
-
         <!-- Submit button -->
         <button type="submit" name="submit_property">Submit</button>
+        <button type="button" onclick="goBack()">Back</button>
+        
     </form>
-</div>
+</div><br>
+    <button id="addPropertyBtn">Add Property</button>
+    <div id="propertyList"></div>
+    <script src="addProperty.js"></script>
 
 </body>
 </html>

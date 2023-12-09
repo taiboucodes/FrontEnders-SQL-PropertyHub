@@ -34,10 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: index.html");
                 exit;
             } else {
+                echo '<div class="login-container">';
                 echo "Invalid username or password.";
+                echo '</div>';
             }
         } else {
+            echo '<div class="login-container">';
             echo "Invalid username or password.";
+            echo '</div>';
         }
     }
 }
@@ -52,13 +56,13 @@ $conn->close();
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav>
-            <a href="index.html">Home</a>
-            <a href="login.php">Login</a>
-            <a href="registration.php">Register</a>
-            <a href="seller_dash.php">Seller Dashboard</a>
-            <a href="search.php">Search Database</a>
-</nav> 
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="login.php">Login</a>
+        <a href="registration.php">Register</a>
+        <a href="seller_dash.php">Seller Dashboard</a>
+        <a href="search.php">Search Database</a>
+    </nav> 
     <div class="login-container">
     <h1>Login</h1>
     <form action="" method="post">
@@ -81,7 +85,6 @@ $conn->close();
             <div class="lock">
                 <img src="lock.png" alt="lock">
             </div>
-
             <a href="#">Forgot Password?</a>
         </div>
     </form>
