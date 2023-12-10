@@ -68,7 +68,7 @@ $conn->close();
         <form action="" method="post">
             <div class="input-group">
                 <label for="username">Username:</label>
-                <input type="text" name="username" placeholder="Email" required><br>
+                <input type="text" name="username" placeholder="username" required><br>
             </div>
             <div class="input-group">
                 <label for="password">Password:</label>
