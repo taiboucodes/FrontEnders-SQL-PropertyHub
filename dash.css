@@ -1,5 +1,3 @@
-
-        /* Add some basic styling for better presentation */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -69,12 +67,10 @@ button {
     flex-wrap: wrap;
     justify-content: space-around;
 }
-
 .property-link {
     text-decoration: none;
     color: #333;
 }
-
 .card h3 {
     margin-top: 0;
 }
@@ -108,7 +104,6 @@ nav a, nav .nav-welcome {
     text-decoration: none;
     display: inline; /* Display items inline */
 }
-
 nav a:hover {
     background-color: #ddd;
     color: black;
@@ -127,22 +122,24 @@ nav a.logout-button {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
 }
-
 .modal-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: lightblue;
     padding: 20px;
     border-radius: 5px;
 }
-
 .close {
     position: absolute;
     top: 10px;
     right: 10px;
     font-size: 20px;
     cursor: pointer;
+    background-color: red;
+    transition: background-color 0.3s;
 }
-
+.close:hover {
+    background-color: darkred; 
+}
