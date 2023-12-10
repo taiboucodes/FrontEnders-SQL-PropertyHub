@@ -47,34 +47,34 @@ form.addEventListener('submit', function (event) {
      event.preventDefault();
      displayProperty();
 
-     // Get form data
+    
     const formData = new FormData(form);
-    formData.append('submit_property', 'true'); // Append the 'submit_property' parameter
+    formData.append('submit_property', 'true');
 
-     // Create an XMLHttpRequest object
+    
     const xhr = new XMLHttpRequest();
 
-    // Set up the POST request
+   
     xhr.open('POST', 'seller_dash.php', true);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-    // Define a callback function to handle the response
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                // Successfully posted data to the server
+             
                  formContainer.style.display = 'none';
                  addPropertyBtn.style.display = 'block';
                 form.reset();
-               // You can optionally display a success message here
+             
            } else {
-                // Handle any errors here
+                
                 console.error('Error:', xhr.status, xhr.statusText);
             }
         }
     };
 
-    // Send the form data to the server
+   
      xhr.send(formData);
  });
 
@@ -82,8 +82,8 @@ function goBack() {
     formContainer.style.display = 'none';
     addPropertyBtn.style.display = 'block';
 }
-function showPropertyDetails(id, location, sqrFeet, age, numBeds, numBath, garden, parking, schoolProx, mainRoadProx) {
-    // Create a pop-up/modal
+function showPropertyDetails(location, sqrFeet, age, numBeds, numBath, garden, parking, schoolProx, mainRoadProx) {
+
     const modal = document.createElement('div');
     modal.classList.add('modal');
     modal.innerHTML = `
@@ -130,41 +130,56 @@ function deleteProperty(id) {
 }
 
 function addProperty() {
-    // Assuming you have a form with id 'propertyForm'
     const form = document.getElementById('propertyForm');
 
-    // Create a FormData object to easily handle form data
+   
     const formData = new FormData(form);
 
-    // Create an XMLHttpRequest object
+   
     const xhr = new XMLHttpRequest();
 
-    // Set up the POST request
     xhr.open('POST', 'add.php', true);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-    // Define a callback function to handle the response
+   
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 alert("Property successfully added!");
                 location.reload();
 
-                // close the form
                 const formContainer = document.getElementById('formContainer');
                 const addPropertyBtn = document.getElementById('addPropertyBtn');
                 formContainer.style.display = 'none';
                 addPropertyBtn.style.display = 'block';
 
-                // reset the form
+              
                 form.reset();
             } else {
-                // Handle any errors here
+               
                 console.error('Error:', xhr.status, xhr.statusText);
             }
         }
     };
 
-    // Send the form data to the server
     xhr.send(formData);
 }
+function editProperty(location, age, sqrFeet, numBeds, numBath, y_nGarden, garage, parking, schoolProx, mainRoadProx) {
+    const form = document.getElementById('propertyForm');
+    form.location.value = location;
+    form.age.value = age;
+    form.sqr_feet.value = sqrFeet;
+    form.num_beds.value = numBeds;
+    form.num_bath.value = numBath;
+    form.y_nGarden.value = y_nGarden;
+    form.garage.value = garage;
+    form.parking.value = parking;
+    form.school_prox = schoolProx;
+    form.mainRoad_prox = mainRoadProx;
+
+    const formContainer = document.getElementById('formContainer');
+    const addPropertyBtn = document.getElementById('addPropertyBtn');
+    formContainer.style.display = 'block';
+    addPropertyBtn.style.display = 'none';
+}
+

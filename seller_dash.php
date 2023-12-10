@@ -7,13 +7,13 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-// Database configuration
+
 $host = "localhost";
 $user = "pdelrossi1";
 $pass = "pdelrossi1";
 $dbname = "pdelrossi1";
 
-// Establish database connection
+
 $conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -36,8 +36,6 @@ $result = mysqli_query($conn, $sql);
     <nav class="nav-bar">
         <div>
             <a href="index.html">Home</a>
-            <a href="login.php">Login</a>
-            <a href="registration.php">Register</a>
             <a href="seller_dash.php">Seller Dashboard</a>
             <a href="search.php">Search Database</a>
         </div>
@@ -80,8 +78,8 @@ $result = mysqli_query($conn, $sql);
         <label for="mainRoad_prox">Proximity to main road in miles:</label>
         <input type="number" name="mainRoad_prox" required><br>
 
+        <input type="hidden" name="property_id" id="property_id" value="">
        
-
         <button type="submit" onclick="addProperty()">Submit Property</button>
         <button type="button" onclick="goBack()">Back</button>
     </form>
@@ -107,8 +105,8 @@ $result = mysqli_query($conn, $sql);
 <div class="card" id="property_<?php echo $id; ?>">
     <a href="#" class="property-link" onclick="showPropertyDetails(
         '<?php echo $location; ?>',
-        '<?php echo $sqr_feet; ?>',
         '<?php echo $age; ?>',
+        '<?php echo $sqr_feet; ?>',
         '<?php echo $num_beds; ?>',
         '<?php echo $num_bath; ?>',
         '<?php echo $y_nGarden; ?>',
@@ -120,6 +118,17 @@ $result = mysqli_query($conn, $sql);
         <p>Square Feet: <?php echo $sqr_feet; ?></p>
     </a>
     <button onclick="deleteProperty(<?php echo $id; ?>)">Delete</button>
+	<button onclick="editProperty(
+        '<?php echo $location; ?>',
+        '<?php echo $age; ?>',
+        '<?php echo $sqr_feet; ?>',
+        '<?php echo $num_beds; ?>',
+        '<?php echo $num_bath; ?>',
+        '<?php echo $y_nGarden; ?>',
+        '<?php echo $parking; ?>',
+        '<?php echo $school_prox; ?>',
+        '<?php echo $mainRoad_prox; ?>'
+    )">Edit</button>
 </div>
 
 

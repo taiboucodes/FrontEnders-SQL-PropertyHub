@@ -33,18 +33,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Perform search for the entire specified table
+    
     if (!empty($table_query) && empty($search_query) && empty($property_query)) {
         $table_query = strtolower($table_query);
 
-        // Display the entire specified table
+    
         echo "<h3>Entire Specified Table</h3>";
 
         if ($table_query === "users_new") {
             $sql_table = "SELECT * FROM users_new";
             $result_table = $conn->query($sql_table);
 
-            // Display all rows and columns, including user_type
+            
             echo "<table border='1'>";
             echo "<tr><th>Username</th><th>Password</th><th>Email</th><th>User Type</th></tr>";
 
@@ -68,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql_property_table = "SELECT * FROM properties";
         $result_property_table = $conn->query($sql_property_table);
 
-        // Display all rows and columns from the properties table
         echo "<h3>All Property Listings</h3>";
 
         echo "<table border='1'>";

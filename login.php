@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $input_user = $_POST["username"];
     $input_pass = $_POST["password"];
 
-    // Prepared statement to avoid SQL Injection
+    
     $stmt = $conn->prepare("SELECT id, username, password FROM users_new WHERE username = ?");
     $stmt->bind_param("s", $input_user);
     $stmt->execute();
@@ -29,14 +29,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
         $row = $result->fetch_assoc();
         $stored_pass = $row["password"];
 
-        // Verify the hashed password
+        
         if (password_verify($input_pass, $stored_pass)) {
-            // Set session variables
+         
             $_SESSION["loggedin"] = true;
             $_SESSION["userid"] = $row["id"];
             $_SESSION["username"] = $row["username"];
 
-            // Redirect to the main page
+           
             header("Location: index.html");
             exit;
         } else {
