@@ -45,6 +45,10 @@ $result = mysqli_query($conn, $sql);
         </div>
     </nav>
 
+    <br>
+    <p class="welcome"> Welcome to the Sellers Dashboard  <?php echo htmlspecialchars(isset($_SESSION["username"]) ? $_SESSION["username"] : "User"); ?>!<p>
+    <h4> Below you will find all you need to manage your properties. </h4>
+
 <div id="formContainer" style="display: none;">
     <form id="propertyForm" method="post" action="#" enctype="multipart/form-data">
         <label for="location">Location:</label>
