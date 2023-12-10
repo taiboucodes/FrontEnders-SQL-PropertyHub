@@ -89,6 +89,7 @@ function showPropertyDetails(location, sqrFeet, age, numBeds, numBath, garden, p
     modal.innerHTML = `
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
+            <img id="displayedImage" src="house.jpeg" style="max-width: 400px;">
             <h2>${location}</h2>
             <p>Square Feet: ${sqrFeet}</p>
             <p>Age: ${age}</p>

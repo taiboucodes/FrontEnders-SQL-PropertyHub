@@ -120,6 +120,7 @@ $result = mysqli_query($conn, $sql);
     )">
         <h1><?php echo $location; ?></h1>
         <p>Square Feet: <?php echo $sqr_feet; ?></p>
+        <img src="house.jpeg" alt="Image" style="max-width: 200px"><br>
     </a>
     <button onclick="deleteProperty(<?php echo $id; ?>)">Delete</button>
 	<button onclick="editProperty(

@@ -48,6 +48,5 @@ if ($result) {
     exit("Internal Server Error");
 }
 
-// Close the database connection
 mysqli_close($conn);
 ?>
