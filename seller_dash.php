@@ -48,7 +48,7 @@ $result = mysqli_query($conn, $sql);
     </nav>
 
 <div id="formContainer" style="display: none;">
-    <form method="post" action="add.php" enctype="multipart/form-data">
+    <form id="propertyForm" method="post" action="#" enctype="multipart/form-data">
         <label for="location">Location:</label>
         <input type="text" name="location" required><br>
 
@@ -80,11 +80,9 @@ $result = mysqli_query($conn, $sql);
         <label for="mainRoad_prox">Proximity to main road in miles:</label>
         <input type="number" name="mainRoad_prox" required><br>
 
-        <label for="images_blob">Upload Image:</label>
-        <input type="file" name="images_blob"><br>
+       
 
-        <!-- Submit button -->
-        <button type="submit" name="submit_property">Submit</button>
+        <button type="submit" onclick="addProperty()">Submit Property</button>
         <button type="button" onclick="goBack()">Back</button>
     </form>
 </div><br>
@@ -119,7 +117,6 @@ $result = mysqli_query($conn, $sql);
         '<?php echo $mainRoad_prox; ?>'
     )">
         <h1><?php echo $location; ?></h1>
-        <?php echo "<img src='data:image/jpeg;base64," . base64_encode($row['img_data']) . "' style='max-width: 200px;'/><br>"; ?>
         <p>Square Feet: <?php echo $sqr_feet; ?></p>
     </a>
     <button onclick="deleteProperty(<?php echo $id; ?>)">Delete</button>

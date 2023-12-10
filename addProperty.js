@@ -31,8 +31,6 @@ function displayProperty() {
         <p>Main Road Proximity: ${formData.get('mainRoad_prox')}<br><br></p>
     `;
 
-    const displayedImage = document.getElementById('displayedImage');
-    displayedImage.src = URL.createObjectURL(formData.get('images_blob'));
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
@@ -46,14 +44,14 @@ function displayProperty() {
 
 
 form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    displayProperty();
+     event.preventDefault();
+     displayProperty();
 
-    // Get form data
+     // Get form data
     const formData = new FormData(form);
     formData.append('submit_property', 'true'); // Append the 'submit_property' parameter
 
-    // Create an XMLHttpRequest object
+     // Create an XMLHttpRequest object
     const xhr = new XMLHttpRequest();
 
     // Set up the POST request
@@ -65,11 +63,11 @@ form.addEventListener('submit', function (event) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 // Successfully posted data to the server
-                formContainer.style.display = 'none';
-                addPropertyBtn.style.display = 'block';
+                 formContainer.style.display = 'none';
+                 addPropertyBtn.style.display = 'block';
                 form.reset();
-                // You can optionally display a success message here
-            } else {
+               // You can optionally display a success message here
+           } else {
                 // Handle any errors here
                 console.error('Error:', xhr.status, xhr.statusText);
             }
@@ -77,8 +75,8 @@ form.addEventListener('submit', function (event) {
     };
 
     // Send the form data to the server
-    xhr.send(formData);
-});
+     xhr.send(formData);
+ });
 
 function goBack() {
     formContainer.style.display = 'none';
@@ -131,3 +129,42 @@ function deleteProperty(id) {
     location.reload();
 }
 
+function addProperty() {
+    // Assuming you have a form with id 'propertyForm'
+    const form = document.getElementById('propertyForm');
+
+    // Create a FormData object to easily handle form data
+    const formData = new FormData(form);
+
+    // Create an XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+
+    // Set up the POST request
+    xhr.open('POST', 'add.php', true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    // Define a callback function to handle the response
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                alert("Property successfully added!");
+                location.reload();
+
+                // close the form
+                const formContainer = document.getElementById('formContainer');
+                const addPropertyBtn = document.getElementById('addPropertyBtn');
+                formContainer.style.display = 'none';
+                addPropertyBtn.style.display = 'block';
+
+                // reset the form
+                form.reset();
+            } else {
+                // Handle any errors here
+                console.error('Error:', xhr.status, xhr.statusText);
+            }
+        }
+    };
+
+    // Send the form data to the server
+    xhr.send(formData);
+}
