@@ -1,58 +1,57 @@
 const addPropertyBtn = document.getElementById('addPropertyBtn');
 const formContainer = document.getElementById('formContainer');
 const propertyList = document.getElementById('propertyList');
+const form = document.querySelector('form');
 
-addPropertyBtn.addEventListener('click', function () {
-    formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+addPropertyBtn.addEventListener('click', () => {
+    formContainer.style.display = 'block';
     addPropertyBtn.style.display = 'none';
 });
 
 function displayProperty() {
-    // Get form data
-    const location = document.getElementsByName('location')[0].value;
-    const age = document.getElementsByName('age')[0].value;
-    const sqrFeet = document.getElementsByName('sqr_feet')[0].value;
-    const numBeds = document.getElementsByName('num_beds')[0].value;
-    const numBath = document.getElementsByName('num_bath')[0].value;
-    const garden = document.getElementsByName('y_nGarden')[0].value;
-    const parking = document.getElementsByName('parking')[0].value;
-    const schoolProx = document.getElementsByName('school_prox')[0].value;
-    const mainRoadProx = document.getElementsByName('mainRoad_prox')[0].value;
+    const formData = new FormData(form);
 
-    const propertyCard = document.createElement('div');
-    propertyCard.classList.add('card');
-    propertyCard.innerHTML = `
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    modalContent.innerHTML = `
+        <span class="close" onclick="closeModal()">&times;</span>
         <h3>Property Details</h3>
-        <p>Location: ${location}</p>
-        <p>Age: ${age}</p>
-        <p>Square Feet: ${sqrFeet}</p>
-        <p>Number of Beds: ${numBeds}</p>
-        <p>Number of Bathrooms: ${numBath}</p>
-        <p>Garden: ${garden}</p>
-        <p>Parking: ${parking}</p>
-        <p>School Proximity: ${schoolProx}</p>
-        <p>Main Road Proximity: ${mainRoadProx}<br><br></p>
+        <img id="displayedImage" style="max-width: 400px;">
+        <p>Location: ${formData.get('location')}</p>
+        <p>Age: ${formData.get('age')}</p>
+        <p>Square Feet: ${formData.get('sqr_feet')}</p>
+        <p>Number of Beds: ${formData.get('num_beds')}</p>
+        <p>Number of Bathrooms: ${formData.get('num_bath')}</p>
+        <p>Garden: ${formData.get('y_nGarden') === 'on' ? 'Yes' : 'No'}</p>
+        <p>Parking: ${formData.get('parking')}</p>
+        <p>School Proximity: ${formData.get('school_prox')}</p>
+        <p>Main Road Proximity: ${formData.get('mainRoad_prox')}<br><br></p>
     `;
+
+    const displayedImage = document.getElementById('displayedImage');
+    displayedImage.src = URL.createObjectURL(formData.get('images_blob'));
+
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.classList.add('delete-btn');
-    deleteButton.addEventListener('click', function () {
-        propertyCard.remove();
-    });
+    deleteButton.addEventListener('click', () => closeModal());
 
-    propertyCard.appendChild(deleteButton);
-    propertyList.appendChild(propertyCard);
+    modalContent.appendChild(deleteButton);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
 }
 
-const form = document.querySelector('form');
+
 form.addEventListener('submit', function (event) {
     event.preventDefault();
     displayProperty();
 
     // Get form data
     const formData = new FormData(form);
-	formData.append('submit_property', 'true'); // Append the 'submit_property' parameter
-
+    formData.append('submit_property', 'true'); // Append the 'submit_property' parameter
 
     // Create an XMLHttpRequest object
     const xhr = new XMLHttpRequest();
@@ -84,4 +83,32 @@ form.addEventListener('submit', function (event) {
 function goBack() {
     formContainer.style.display = 'none';
     addPropertyBtn.style.display = 'block';
+}
+function showPropertyDetails(id, location, sqrFeet, age, numBeds, numBath, garden, parking, schoolProx, mainRoadProx) {
+    // Create a pop-up/modal
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>${location}</h2>
+            <p>Square Feet: ${sqrFeet}</p>
+            <p>Age: ${age}</p>
+            <p>Number of Beds: ${numBeds}</p>
+            <p>Number of Bathrooms: ${numBath}</p>
+            <p>Garden: ${garden}</p>
+            <p>Parking: ${parking}</p>
+            <p>School Proximity: ${schoolProx}</p>
+            <p>Main Road Proximity: ${mainRoadProx}</p>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    modal.style.display = 'block';
+}
+
+
+function closeModal() {
+    const modal = document.querySelector('.modal');
+    modal.parentNode.removeChild(modal);
 }

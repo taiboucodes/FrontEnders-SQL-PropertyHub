@@ -1,56 +1,27 @@
 <?php
 session_start();
 
-// Check if the user is not logged in, if not then redirect to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+// Check if the user is not logged in, redirect to login page
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: login.php");
     exit;
 }
+
+// Database configuration
 $host = "localhost";
 $user = "pdelrossi1";
 $pass = "pdelrossi1";
 $dbname = "pdelrossi1";
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-$username = isset($_SESSION["username"]) ? $_SESSION["username"] : "User";
 
-
+// Establish database connection
 $conn = new mysqli($host, $user, $pass, $dbname);
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if the form is submitted
-    if (isset($_POST["submit_property"])) {
-        // Process the form data and insert into the properties table
+$sql = "SELECT * FROM properties";
+$result = mysqli_query($conn, $sql);
 
-        // Sanitize and retrieve form data
-        $location = mysqli_real_escape_string($conn, $_POST["location"]);
-        $age = mysqli_real_escape_string($conn, $_POST["age"]);
-        $sqr_feet = mysqli_real_escape_string($conn, $_POST["sqr_feet"]);
-        $num_beds = mysqli_real_escape_string($conn, $_POST["num_beds"]);
-        $num_bath = mysqli_real_escape_string($conn, $_POST["num_bath"]);
-        $y_nGarden = mysqli_real_escape_string($conn, $_POST["y_nGarden"]);
-        $parking = mysqli_real_escape_string($conn, $_POST["parking"]);
-        $school_prox = mysqli_real_escape_string($conn, $_POST["school_prox"]);
-        $mainRoad_prox = mysqli_real_escape_string($conn, $_POST["mainRoad_prox"]);
-
-        // Insert data into properties table
-        $sql_insert_property = "INSERT INTO properties (location, age, sqr_feet, num_beds, num_bath, y_nGarden, parking, school_prox, mainRoad_prox)
-                               VALUES ('$location', '$age', '$sqr_feet', '$num_beds', '$num_bath', '$y_nGarden', '$parking', '$school_prox', '$mainRoad_prox')";
-
-        if ($conn->query($sql_insert_property) === TRUE) {
-            echo "<p>Property details submitted successfully.</p>";
-        } else {
-            echo "Error: " . $sql_insert_property . "<br>" . $conn->error;
-        }
-    }
-}
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -62,53 +33,103 @@ $conn->close();
     <link rel="stylesheet" href="dash.css">
 </head>
 <body>
-	<nav class="nav-bar">
-		<div>
-			<a href="index.html">Home</a>
-			<a href="login.php">Login</a>
-			<a href="registration.php">Register</a>
-			<a href="seller_dash.php">Seller Dashboard</a>
-			<a href="search.php">Search Database</a>
-		</div>
-		<div>
-			<span class="nav-welcome">Welcome, <?php echo htmlspecialchars($username); ?> !</span>
-			<a href="logout.php" class="logout-button">Logout</a>
-		</div>
-	</nav>
-
-
+    <nav class="nav-bar">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="login.php">Login</a>
+            <a href="registration.php">Register</a>
+            <a href="seller_dash.php">Seller Dashboard</a>
+            <a href="search.php">Search Database</a>
+        </div>
+        <div>
+            <span class="nav-welcome">Welcome, <?php echo htmlspecialchars(isset($_SESSION["username"]) ? $_SESSION["username"] : "User"); ?> !</span>
+            <a href="logout.php" class="logout-button">Logout</a>
+        </div>
+    </nav>
 
 <div id="formContainer" style="display: none;">
-    <form method="post" action="seller_dash.php">
+    <form method="post" action="add.php" enctype="multipart/form-data">
+        <label for="location">Location:</label>
+        <input type="text" name="location" required><br>
 
-        <!-- Fields -->
-        <?php
-        $fields = [
-            "Where is the location of your property" => "location",
-            "How old is your property" => "age",
-            "How many square feet is your property? Type a number only." => "sqr_feet",
-            "How many beds are there?" => "num_beds",
-            "How many bathrooms are there?" => "num_bath",
-            "Is there a garden? Type yes or no" => "y_nGarden",
-            "Is there parking availability? Type Street, Garage, or None" => "parking",
-            "How far is the nearest school? Type an Int" => "school_prox",
-            "How far is the main road? Type an Int" => "mainRoad_prox"
-        ];
+        <label for="age">Age:</label>
+        <input type="number" name="age" required><br>
 
-        foreach ($fields as $label => $name) {
-            echo '<label>' . $label . '</label>';
-            echo '<input type="text" name="' . $name . '">';
-        }
-        ?>
+        <label for="sqr_feet">Square Feet:</label>
+        <input type="number" name="sqr_feet" required><br>
+
+        <label for="num_beds">Number of Bedrooms:</label>
+        <input type="number" name="num_beds" required><br>
+
+        <label for="num_bath">Number of Bathrooms:</label>
+        <input type="number" name="num_bath" required><br>
+
+        <label for="y_nGarden">Is there a garden?:</label>
+        <input type="checkbox" name="y_nGarden" required><br>
+
+        <label for="parking">Select Parking Option:</label>
+        <select id="parking" name="parking">
+            <option value="garage">Garage</option>
+            <option value="public">Public</option>
+            <option value="none">None</option>
+        </select>
+
+        <label for="school_prox">Proximity to school in miles:</label>
+        <input type="number" name="school_prox" required><br>
+
+        <label for="mainRoad_prox">Proximity to main road in miles:</label>
+        <input type="number" name="mainRoad_prox" required><br>
+
+        <label for="images_blob">Upload Image:</label>
+        <input type="file" name="images_blob"><br>
+
         <!-- Submit button -->
         <button type="submit" name="submit_property">Submit</button>
         <button type="button" onclick="goBack()">Back</button>
-        
     </form>
 </div><br>
-    <button id="addPropertyBtn">Add Property</button>
-    <div id="propertyList"></div>
-    <script src="addProperty.js"></script>
 
+<button id="addPropertyBtn">Add Property</button>
+
+<div id="propertyList" class="card-container">
+    <?php
+    while ($row = mysqli_fetch_assoc($result)) {
+        $id = $row["id"];
+        $location = $row["location"];
+        $age = $row["age"];
+        $sqr_feet = $row["sqr_feet"];
+        $num_beds = $row["num_beds"];
+        $num_bath = $row["num_bath"];
+        $y_nGarden = $row["y_nGarden"];
+        $parking = $row["parking"];
+        $school_prox = $row["school_prox"];
+        $mainRoad_prox = $row["mainRoad_prox"];
+    ?>
+
+    <div class="card" onclick="showPropertyDetails(
+        <?php echo $id; ?>,
+        '<?php echo $location; ?>',
+        '<?php echo $sqr_feet; ?>',
+        '<?php echo $age; ?>',
+        '<?php echo $num_beds; ?>',
+        '<?php echo $num_bath; ?>',
+        '<?php echo $y_nGarden; ?>',
+        '<?php echo $parking; ?>',
+        '<?php echo $school_prox; ?>',
+        '<?php echo $mainRoad_prox; ?>'
+    )">
+        <a href="#" class="property-link" onclick="event.preventDefault();">
+            <h1><?php echo $location; ?></h1>
+            <?php echo "<img src='data:image/jpeg;base64," . base64_encode($row['img_data']) . "' style='max-width: 200px;'/><br>"; ?>
+            <p>Square Feet: <?php echo $sqr_feet; ?></p>
+        </a>
+    </div>
+
+    <?php
+    }
+    mysqli_close($conn);
+    ?>
+</div>
+<script src="addProperty.js"></script>
 </body>
 </html>
