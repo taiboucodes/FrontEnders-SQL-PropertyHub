@@ -112,3 +112,22 @@ function closeModal() {
     const modal = document.querySelector('.modal');
     modal.parentNode.removeChild(modal);
 }
+function deleteProperty(id) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'delete.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                const cardToRemove = document.getElementById(`card_${id}`);
+                cardToRemove.remove();
+            } else {
+                console.error('Error:', xhr.status, xhr.statusText);
+            }
+        }
+    };
+    xhr.send(`id=${id}`);
+    alert("Property successfully deleted!");
+    location.reload();
+}
+

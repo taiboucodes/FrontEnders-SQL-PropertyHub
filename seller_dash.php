@@ -106,8 +106,8 @@ $result = mysqli_query($conn, $sql);
         $mainRoad_prox = $row["mainRoad_prox"];
     ?>
 
-    <div class="card" onclick="showPropertyDetails(
-        <?php echo $id; ?>,
+<div class="card" id="property_<?php echo $id; ?>">
+    <a href="#" class="property-link" onclick="showPropertyDetails(
         '<?php echo $location; ?>',
         '<?php echo $sqr_feet; ?>',
         '<?php echo $age; ?>',
@@ -118,12 +118,13 @@ $result = mysqli_query($conn, $sql);
         '<?php echo $school_prox; ?>',
         '<?php echo $mainRoad_prox; ?>'
     )">
-        <a href="#" class="property-link" onclick="event.preventDefault();">
-            <h1><?php echo $location; ?></h1>
-            <?php echo "<img src='data:image/jpeg;base64," . base64_encode($row['img_data']) . "' style='max-width: 200px;'/><br>"; ?>
-            <p>Square Feet: <?php echo $sqr_feet; ?></p>
-        </a>
-    </div>
+        <h1><?php echo $location; ?></h1>
+        <?php echo "<img src='data:image/jpeg;base64," . base64_encode($row['img_data']) . "' style='max-width: 200px;'/><br>"; ?>
+        <p>Square Feet: <?php echo $sqr_feet; ?></p>
+    </a>
+    <button onclick="deleteProperty(<?php echo $id; ?>)">Delete</button>
+</div>
+
 
     <?php
     }
