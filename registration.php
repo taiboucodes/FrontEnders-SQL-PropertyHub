@@ -56,18 +56,21 @@ $conn->close();
 <head>
     <title>Registration</title>
     <link rel="stylesheet" href="registration.css">
-    <script>
-        function toggleSecretPassword() {
-            var userType = document.getElementById("user_type").value;
-            var secretPasswordDiv = document.getElementById("secret_password_div");
+<script>
+    function toggleSecretPassword() {
+        var userType = document.getElementById("user_type").value;
+        var secretPasswordInput = document.getElementById("secret_password");
 
-            if (userType === "admin") {
-                secretPasswordDiv.style.display = "block";
-            } else {
-                secretPasswordDiv.style.display = "none";
-            }
+        if (userType === "admin") {
+            secretPasswordInput.setAttribute("required", "true");
+            secretPasswordInput.style.display = "block";
+        } else {
+            secretPasswordInput.removeAttribute("required");
+            secretPasswordInput.style.display = "none";
         }
-    </script>
+    }
+</script>
+
 </head>
 <body>
 <nav>
@@ -113,7 +116,7 @@ $conn->close();
         <div class="input-group">
             <div id="secret_password_div" style="display: none;">
                 <label for="secret_password">Secret Password:</label>
-                <input type="password" name="secret_password" required>
+                <input type="password" name="secret_password" id="secret_password">
         </div>
     </div>
               <input type="submit" name="register" value="Register">
