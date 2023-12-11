@@ -103,6 +103,7 @@ $result = mysqli_query($conn, $sql);
         $parking = $row["parking"];
         $school_prox = $row["school_prox"];
         $mainRoad_prox = $row["mainRoad_prox"];
+        $id = $row["id"];
     ?>
 
 <div class="card" id="property_<?php echo $id; ?>">
