@@ -1,4 +1,4 @@
-<?php
+aa<?php
 $host = "localhost";
 $user = "pdelrossi1";
 $pass = "pdelrossi1";
@@ -59,17 +59,18 @@ $conn->close();
 <script>
     function toggleSecretPassword() {
         var userType = document.getElementById("user_type").value;
-        var secretPasswordInput = document.getElementById("secret_password");
+        var secretPasswordDiv = document.getElementById("secret_password_div");
 
         if (userType === "admin") {
-            secretPasswordInput.setAttribute("required", "true");
-            secretPasswordInput.style.display = "block";
+            secretPasswordDiv.style.display = "block";
+            document.getElementById("secret_password").setAttribute("required", "true");
         } else {
-            secretPasswordInput.removeAttribute("required");
-            secretPasswordInput.style.display = "none";
+            secretPasswordDiv.style.display = "none";
+            document.getElementById("secret_password").removeAttribute("required");
         }
     }
 </script>
+
 
 </head>
 <body>
