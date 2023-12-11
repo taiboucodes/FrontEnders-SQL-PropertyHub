@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-// Check if the user is not logged in, redirect to login page
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data
+    
     $propertyId = $_POST['property_id'];
     $location = $_POST['location'];
     $age = $_POST['age'];
@@ -15,7 +15,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $schoolProx = $_POST['school_prox'];
     $mainRoadProx = $_POST['mainRoad_prox'];
 
-    // Perform the update query
+    
+    $host = "localhost";
+    $user = "pdelrossi1";
+    $pass = "pdelrossi1";
+    $dbname = "pdelrossi1";
+    $conn = new mysqli($host, $user, $pass, $dbname);
+
+    
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    
     $sqlUpdate = "UPDATE properties SET
         location = '$location',
         age = '$age',
@@ -28,15 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mainRoad_prox = '$mainRoadProx'
         WHERE id = '$propertyId'";
 
-    if (mysqli_query($conn, $sqlUpdate)) {
-        // Successfully updated
+    
+    if ($conn->query($sqlUpdate) === TRUE) {
+        
         echo 'Property updated successfully.';
     } else {
-        // Error in update
-        echo 'Error updating property: ' . mysqli_error($conn);
+       
+        echo 'Error updating property: ' . $conn->error;
     }
 
-    // Close database connection
-    mysqli_close($conn);
+
+    $conn->close();
 }
 ?>

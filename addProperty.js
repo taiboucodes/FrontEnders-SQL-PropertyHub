@@ -89,7 +89,6 @@ function showPropertyDetails(location, sqrFeet, age, numBeds, numBath, garden, p
     modal.innerHTML = `
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <img id="displayedImage" src="house.jpeg" style="max-width: 400px;">
             <h2>${location}</h2>
             <p>Square Feet: ${sqrFeet}</p>
             <p>Age: ${age}</p>
@@ -165,22 +164,20 @@ function addProperty() {
 
     xhr.send(formData);
 }
-function editProperty(location, age, sqrFeet, numBeds, numBath, y_nGarden, garage, parking, schoolProx, mainRoadProx) {
+function editProperty(location, age, sqrFeet, numBeds, numBath, y_nGarden, parking, schoolProx, mainRoadProx) {
     const form = document.getElementById('propertyForm');
     form.location.value = location;
     form.age.value = age;
     form.sqr_feet.value = sqrFeet;
     form.num_beds.value = numBeds;
     form.num_bath.value = numBath;
-    form.y_nGarden.value = y_nGarden;
-    form.garage.value = garage;
+    form.y_nGarden.checked = y_nGarden === 'on'; // Check the checkbox based on the value
     form.parking.value = parking;
-    form.school_prox = schoolProx;
-    form.mainRoad_prox = mainRoadProx;
+    form.school_prox.value = schoolProx;
+    form.mainRoad_prox.value = mainRoadProx;
 
     const formContainer = document.getElementById('formContainer');
     const addPropertyBtn = document.getElementById('addPropertyBtn');
     formContainer.style.display = 'block';
     addPropertyBtn.style.display = 'none';
 }
-

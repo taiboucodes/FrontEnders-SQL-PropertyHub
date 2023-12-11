@@ -94,7 +94,6 @@ $result = mysqli_query($conn, $sql);
 <div id="propertyList" class="card-container">
     <?php
     while ($row = mysqli_fetch_assoc($result)) {
-        $id = $row["id"];
         $location = $row["location"];
         $age = $row["age"];
         $sqr_feet = $row["sqr_feet"];
